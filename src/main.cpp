@@ -3,12 +3,14 @@
 #include <ctime>
 #include <GL/glut.h>
 #include "callbackfunc.hpp"
+#include "sorting.hpp"
 
 using namespace std;
 
 
 int main(int argc, char **argv){
     srand(time(NULL));
+    init_array(MAX_ARR_LENGHT);
     
     glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, lineWidthRange);
     
@@ -20,5 +22,6 @@ int main(int argc, char **argv){
     glutCreateWindow("Sortiranje");
     init_callbacks();
 
+    glutTimerFunc(300,glutTimer,1);
     glutMainLoop();
 }

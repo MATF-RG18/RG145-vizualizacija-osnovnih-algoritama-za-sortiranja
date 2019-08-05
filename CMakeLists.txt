@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(SOURCE_FILES
         src/main.cpp
         src/callbackfunc.cpp
+        src/sorting.cpp
     )
 
 link_libraries(GL)
