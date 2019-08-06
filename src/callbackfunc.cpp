@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <cmath>
 #include <ctime>
 #include <GL/glut.h>
 #include "callbackfunc.hpp"
@@ -10,9 +11,11 @@
 int sorting = 0;
 int array_length = 0;
 int* array;
-int window_width = 1000;
-int window_height = 800;
+int window_width = 1200;
+int window_height = 1000;
 GLfloat lineWidthRange[2] = {0.0f, 5.0f};
+int sort_count = 0;
+std::string sorting_string[4] = {"Selection Sort","Insertion Sort", "Bubble Sort", "Quick Sort"};
 
 void on_display(void){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -27,9 +30,10 @@ void on_display(void){
     
     glClearColor(0, 0, 0, 1);
     
-    glTranslatef(-11, 5, -45);
+    glTranslatef(-11, 3, -45);
     glRotatef(40, 1, 0, 0);
     
+    display_text();
     drawGrid();
     draw_array();
     
@@ -41,16 +45,29 @@ void on_reshape(int width, int height){
     window_height = height;
 }
 void on_keyboard(unsigned char key, int x, int y){
-    switch(key){
-        case 27: 
-            exit(EXIT_SUCCESS);break;
-        case 's': case 'S':{
-            sorting = 1;
-            break;
-        }
-        case 'r': case 'R':{
+    if(sorting == 0){
+        switch(key){
+            case 27: 
+                exit(EXIT_SUCCESS);
+                break;
+            case 's': case 'S':{
+                sorting = 1;
+                break;
+            }
+            case 'r': case 'R':{
             init_array(MAX_ARR_LENGHT);
             glutPostRedisplay();break;
+            }
+            case 'a': case 'A':{
+                sort_count = (sort_count + 1) % 4;
+            }
+        }
+    }else{
+        switch(key){
+            case 'p': case 'P':{
+                sorting = 0;
+                break;
+            }
         }
     }
 }
@@ -75,12 +92,6 @@ void drawGrid(){
             glTranslatef(i-23, 0, 0);
             glRotatef(-90, 0, 1, 0);
         }
-//         if(i > 21){
-//             glColor3f(1, 0, 0);
-//             glTranslatef(10, 0, 0.4);        
-//             glutWireCube(1);
-//             glTranslatef(-10, 0, -0.4);        
-//         }
         glColor3f(1, 1, 1);
         glEnable(GL_LINE_SMOOTH);
         glLineWidth(1.0f);
@@ -183,4 +194,77 @@ void draw_array(){
         glTranslatef(1, 0, 0);
     }
     glTranslatef(-1, 0, -10);
+}
+void bitmap_output(float x, float y, std::string string, void *font)
+{
+    glPushMatrix();
+	int len, i;
+
+	glRasterPos2f(x, y);
+	len = string.size();
+	for (i = 0; i < len; i++) {
+		glutBitmapCharacter(font, string[i]);
+	}
+    glPopMatrix();
+}
+
+void display_text()
+{
+	glColor3f(0.6f, 0.137255, 0.556863);
+	bitmap_output(-3, -50, "VIZUELIZACIJA ALGORITMA",   GLUT_BITMAP_TIMES_ROMAN_24 );
+	glBegin(GL_LINE_LOOP);
+		glVertex2f(-4, -49);
+		glVertex2f(-20, -49);
+	glEnd();
+
+        glBegin(GL_LINE_LOOP);
+		glVertex2f(42, -49);
+		glVertex2f(22, -49);
+	glEnd();
+
+
+	if (sorting == 0)
+	{
+		bitmap_output(-5, 17, "Komande:",GLUT_BITMAP_TIMES_ROMAN_24);
+                glTranslatef(-5.3,16.3,0);
+                draw_circle();
+                glTranslatef(5.3,-16.3,0);
+		bitmap_output(-5, 16, "Pritiskom na s algoritam se startuje",GLUT_BITMAP_TIMES_ROMAN_24);
+                glTranslatef(-5.6,15.3,0);
+                draw_circle();
+                glTranslatef(5.6,-15.3,0);
+		bitmap_output(-5.3f, 15, "Pritiskom na a menja se algoritam",GLUT_BITMAP_TIMES_ROMAN_24);
+                glTranslatef(-5.9,14.3,0);
+                draw_circle();
+                glTranslatef(5.9,-14.3,0);
+		bitmap_output(-5.6, 14, "Pritiskom na r niz se randomizuje",GLUT_BITMAP_TIMES_ROMAN_24);
+                glTranslatef(-6.2,13.3,0);
+                draw_circle();
+                glTranslatef(6.2,-13.3,0);
+		bitmap_output(-5.9, 13, "Esc za izlaz iz programa",GLUT_BITMAP_TIMES_ROMAN_24);
+                glTranslatef(-6.5,12.3,0);
+                draw_circle();
+                glTranslatef(6.5,-12.3,0);
+		bitmap_output(-6.2, 12, "Izabrani sort: ",GLUT_BITMAP_TIMES_ROMAN_24);
+		bitmap_output(-6.5, 11, sorting_string[sort_count],GLUT_BITMAP_9_BY_15);
+	}
+	else if (sorting == 1)	// while sorting
+	{
+		glColor3f(0.5,0.5,0.5);
+		bitmap_output(-5, 17, "Niz se sortira...",GLUT_BITMAP_9_BY_15);
+		bitmap_output(-5, 16, "Pritisni p za pauzu.",GLUT_BITMAP_9_BY_15);
+		glColor3f(0.0,0.0,0.0);
+	}
+}
+
+void draw_circle(){
+    glPushMatrix();
+    float radius = 0.15;
+    glPushMatrix();
+    glColor3f(0.2, 0.3, 0.5);  
+    glBegin(GL_POLYGON);
+    for(double i = 0; i < 2 * PI; i += PI / 6) 
+        glVertex3f(cos(i) * radius, sin(i) * radius, 0.0);
+    glEnd();
+    glPopMatrix();
 }

@@ -15,7 +15,12 @@ int piv = 0;
 
 void glutTimer(int value){
     if(sorting){
-        insertionSort();
+        switch(sort_count){
+            case 0: selectionSort(); break;
+            case 1: insertionSort();break;
+            case 2: bubbleSort();break;
+            case 3: quickSort();break;
+        }
     }
     glutPostRedisplay();
     glutTimerFunc(300, glutTimer, 1);
