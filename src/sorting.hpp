@@ -3,6 +3,8 @@
 
 extern int i, j;
 extern int l, r;
+extern int p, q;
+extern int flag;
 extern int flag1, flag2;
 extern int piv, piv1;
 extern int beg[MAX_ARR_LENGHT];

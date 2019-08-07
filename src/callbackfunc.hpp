@@ -5,7 +5,7 @@
 #include <GL/glut.h>
 
 #define MAX_ARR_LENGHT 20
-#define PI 3.14
+#define PI 3.141592653589793
 
 extern int* array;
 extern int array_length;

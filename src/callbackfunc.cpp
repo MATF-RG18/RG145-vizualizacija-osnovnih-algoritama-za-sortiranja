@@ -115,8 +115,22 @@ void init_array(int lenght){
 }
 
 void draw_cuboid(int height, int width){
+    glEnable(GL_NORMALIZE);
+    
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glLineWidth(2.5f);
+    glBegin(GL_LINE_LOOP);
+    glNormal3f(0.0f, 0.0f, 1.0f);
+   glVertex3f(-0.5f, 0.5f * height, 0.5f);
+    glVertex3f(0.5f, 0.5f * height, 0.5f);
+    glVertex3f(0.5f, 0.5f * height, -0.5f);
+    glVertex3f(-0.5f, 0.5f * height, -0.5f);
+    glEnd();
+    glLineWidth(1.0f);
+    
     glBegin(GL_QUADS);
     // top
+    
     glColor3f(1.0f, 0.0f, 0.0f);
     glNormal3f(0.0f, 1.0f, 0.0f);
         
@@ -126,17 +140,42 @@ void draw_cuboid(int height, int width){
     glVertex3f(-0.5f, 0.5f * height, -0.5f);
     
     glEnd();
-	
+    
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glLineWidth(2.5f);
+    glBegin(GL_LINE_LOOP);
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(0.5f, 0, 0.5f);
+    glVertex3f(0.5f, 0.5f * height, 0.5f);
+    glVertex3f(-0.5f, 0.5f * height, 0.5f);
+    glVertex3f(-0.5f, 0, 0.5f);
+    glEnd();
+    glLineWidth(1.0f);
+    
     glBegin(GL_QUADS);
     // front
-    glColor3f(0.0f, 1.0f, 0.0f);
+    if(width == 0)
+        glColor3f(0.0f, 1.0f, 0.0f);
+    else
+        glColor3f(1.0f, 1.0f, 0.0f);        
     glNormal3f(0.0f, 0.0f, 1.0f);
-        
     glVertex3f(0.5f, 0, 0.5f);
     glVertex3f(0.5f, 0.5f * height, 0.5f);
     glVertex3f(-0.5f, 0.5f * height, 0.5f);
     glVertex3f(-0.5f, 0, 0.5f);	
     glEnd();
+    
+    
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glLineWidth(2.5f);
+    glBegin(GL_LINE_LOOP);
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(0.5f, 0.5f * height, -0.5f);
+    glVertex3f(0.5f, 0.5f * height, 0.5f);
+    glVertex3f(0.5f, 0, 0.5f);
+    glVertex3f(0.5f, 0, -0.5f);
+    glEnd();
+    glLineWidth(1.0f);
     
     glBegin(GL_QUADS);
     // right
@@ -149,6 +188,18 @@ void draw_cuboid(int height, int width){
     glVertex3f(0.5f, 0, -0.5f);
     
     glEnd();
+    
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glLineWidth(2.5f);
+    glBegin(GL_LINE_LOOP);
+    glNormal3f(0.0f, 0.0f, 1.0f);
+   glVertex3f(-0.5f, 0, 0.5f);
+    glVertex3f(-0.5f, 0.5f * height, 0.5f);
+    glVertex3f(-0.5f, 0.5f * height, -0.5f);
+    glVertex3f(-0.5f, 0, -0.5f);
+    glEnd();
+    glLineWidth(1.0f);
+    
     
     glBegin(GL_QUADS);
     // left
@@ -189,8 +240,26 @@ void draw_cuboid(int height, int width){
 
 void draw_array(){
     glTranslatef(1, 0, 10);
+    float razmak = 0;
     for(int i=0; i<array_length; i++){
-        draw_cuboid(array[i], 0);
+        if(q == i){
+            draw_cuboid(array[i], 1);
+            q = -1;
+        }else if(p == i){
+            draw_cuboid(array[i], 1);
+            p = -1;
+        }else{
+            draw_cuboid(array[i], 0);
+        }
+        if(std::to_string(array[i]).size() == 2){
+            glColor3f(1.0, 0.0, 0.0);
+            bitmap_output(razmak, 12, (std::to_string(array[i])), GLUT_BITMAP_TIMES_ROMAN_24);
+            razmak -= 0.05;
+        }else{
+            glColor3d(1.0, 0.0, 0.0);
+            bitmap_output(razmak + 0.2,  12, (std::to_string(array[i])), GLUT_BITMAP_TIMES_ROMAN_24);
+            razmak -= 0.025;
+        }
         glTranslatef(1, 0, 0);
     }
     glTranslatef(-1, 0, -10);
@@ -251,7 +320,7 @@ void display_text()
 	else if (sorting == 1)	// while sorting
 	{
 		glColor3f(0.5,0.5,0.5);
-		bitmap_output(-5, 17, "Niz se sortira...",GLUT_BITMAP_9_BY_15);
+		bitmap_output(-5, 17, "Niz se sortira... Za promenu algoritma, randomizaciju niza ili izlazak iz programa prvo se mora pauzirati. ",GLUT_BITMAP_9_BY_15);
 		bitmap_output(-5, 16, "Pritisni p za pauzu.",GLUT_BITMAP_9_BY_15);
 		glColor3f(0.0,0.0,0.0);
 	}

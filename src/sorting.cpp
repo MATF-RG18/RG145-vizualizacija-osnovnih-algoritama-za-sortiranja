@@ -6,6 +6,8 @@
 
 using namespace std;
 
+int flag = 0; 
+int p = -1, q = -1;
 int i = 0, j = 0;
 int l = 0, r = 0;
 int flag1 = 0, flag2 = 0;
@@ -14,6 +16,8 @@ int ending[MAX_ARR_LENGHT];
 int piv = 0;
 
 void glutTimer(int value){
+    if(value != 1)
+        return;
     if(sorting){
         switch(sort_count){
             case 0: selectionSort(); break;
@@ -23,7 +27,7 @@ void glutTimer(int value){
         }
     }
     glutPostRedisplay();
-    glutTimerFunc(300, glutTimer, 1);
+    glutTimerFunc(1000, glutTimer, 1);
 }
 int notsorted(){
     for(int k=0;k<MAX_ARR_LENGHT-1;k++){
@@ -43,41 +47,50 @@ void selectionSort(){
             }
             
             if(array[min] < array[i]){
+                p = min;
+                q = i;
                 int temp = array[min];
                 array[min] = array[i];
                 array[i] = temp;
                 
-                //ideja je da prekinem petlju posle svakog koraka da bi     se iscrtalo
-                goto A;
+                //ideja je da prekinem petlju posle svakog koraka da bi se iscrtalo
+                return;
             }
             i++;
         }   
     }
     sorting = 0;
     i = j = 0;
-    A:  ;
 }
 
 void insertionSort(){
     if(notsorted){
         while(i<MAX_ARR_LENGHT){
-            j=i;
+            if(flag == 0){
+                j = i;
+                flag = 1;
+            }
             while(j<MAX_ARR_LENGHT-1){
                 if(array[j]>array[j+1]){
+                    p = j;
+                    q = j - 1;
                     int temp=array[j];
                     array[j]=array[j+1];
                     array[j+1]=temp;
-
-                    goto A;
+                    i = 0;
+                    j = 0;
+                    return;
                 }
                 j++;
+                if(j == MAX_ARR_LENGHT - 1){
+                    flag = 0;
+                }
             }
             i++;
         }
     }
     sorting = 0;
     i = j = 0;
-    A: ;
 }
 
 
@@ -88,7 +101,9 @@ void bubbleSort(){
                 int temp = array[i];
                 array[i] = array[i+1];
                 array[i+1] = temp;
-                goto A;
+                p = i;
+                q = i + 1;
+                return;
             }
             i++;
             if(i == MAX_ARR_LENGHT - 1){
@@ -98,7 +113,6 @@ void bubbleSort(){
     }
     sorting = 0;
     i = 0;
-    A: ;
 }
 
 void quickSort() {
