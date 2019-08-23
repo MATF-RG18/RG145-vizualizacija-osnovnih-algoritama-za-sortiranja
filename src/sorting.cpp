@@ -8,44 +8,13 @@
 
 using namespace std;
 
-
-int speed = 0;
-int speed_for_bars[5] = {1000, 700, 500, 300, 100};
-int speed_for_spheres[5] = {70, 60, 50, 30, 10};
 float init_x1 = 0, init_x2 = 0;
-int flag = 0; 
-int p = -1, q = -1;
+// postavljamo ih na -1 jer ne zelimo ni jedan da bojimo u naglasenu boju ako se trenutno ne menjaju
+int p = -1, q = -1; 
 int i = 0, j = 0;
 int minimum = -1;
 
-void barTimer(int value){
-    if(value != 1)
-        return;
-    if(sorting){
-        switch(type_of_sort){
-            case 0: selectionSort(); break;
-            case 1: insertionSort();break;
-            case 2: bubbleSort();break;
-        }
-    }
-    glutPostRedisplay();
-    glutTimerFunc(speed_for_bars[speed], barTimer, 1);
-}
-void sphereTimer(int value){
-    if(value != 2)
-        return;
-    
-    if(sorting){
-        switch(type_of_sort){
-            case 0: selectionSortSphere(); break;
-            case 1: insertionSortSphere();break;
-            case 2: bubbleSortSphere();break;
-        }
-    }
-    
-    glutPostRedisplay();
-    glutTimerFunc(speed_for_spheres[speed], sphereTimer, 2);
-}
+
 int notsorted(){
     for(int k=0;k<array_lenght-1;k++){
         if(array[k]>array[k+1])
@@ -151,20 +120,21 @@ void insertionSortSphere(){
     }
     if(!notsorted() && swapping_ongonig  == 0){
         sorting = 0;
-        global_i = global_j = 0;
+        global_i = 0;
+        global_j = 0;
     }
 }
 
 void bubbleSortSphere(){
     if(!swapping_ongonig){
-        std::cout << global_i << "\n";
         while(global_i < MAX_ARR_SPHERES - 1){
             if(array[global_i] > array[global_i+1]){
-                swap(array_of_spheres[global_i], array_of_spheres[global_i+1]);
                 
                 int temp = array[global_i];
                 array[global_i] = array[global_i+1];
                 array[global_i+1] = temp;
+                
+                swap(array_of_spheres[global_i], array_of_spheres[global_i+1]);
                 return;
             }
             global_i++;
@@ -227,11 +197,9 @@ void swap(Sphere &s1, Sphere &s2){
     if(fabs(init_x1 - s2.x_axis) < 0.005  && fabs(init_x2 - s1.x_axis) < 0.005){
         swapping_ongonig  = 0;
         
-        std::cout << s1.x_axis << " " << s2.x_axis << "\n"; 
         float temp = s1.x_axis;
         s1.x_axis = s2.x_axis;
         s2.x_axis = temp;
-        std::cout << s1.x_axis << " " << s2.x_axis << "\n"; 
         
         temp = s1.y_axis;
         s1.y_axis = s2.y_axis;
