@@ -2,7 +2,7 @@
 ### :computer: Instalacija:
 * Za pokretanje korisnik je neophodno da ima GL/glut biblioteku i cmake :heavy_exclamation_mark:
 * Repozitorijum klonirajte komandom: ``` git clone https://github.com/MATF-RG18/RG145-vizualizacija-osnovnih-algoritama-za-sortiranja ```
-* Nakon pozicioniranja u odgovarajući direktorijum izvrsavanjem komandi:
+* Nakon pozicioniranja u odgovarajući direktorijum izvrsavanjem komandi:<br>
 	```mkdir build```<br>
         ```cd build```<br>
         ```cmake ..```<br>
