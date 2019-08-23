@@ -1,14 +1,13 @@
 # :bar_chart: Vizualizacija osnovnih algoritama za sortiranja
 ### :computer: Instalacija:
 * Za pokretanje korisnik je neophodno da ima GL/glut biblioteku i cmake :heavy_exclamation_mark:
-* Repozitorijum klonirajte komandom: ''' git clone https://github.com/MATF-RG18/RG145-vizualizacija-osnovnih-algoritama-za-sortiranja'''
+* Repozitorijum klonirajte komandom: ``` git clone https://github.com/MATF-RG18/RG145-vizualizacija-osnovnih-algoritama-za-sortiranja ```
 * Nakon pozicioniranja u odgovarajući direktorijum izvrsavanjem komandi:
-'''
-	mkdir build
-        cd build
-        cmake ..
-        make
-'''
+	```mkdir build```<br>
+        ```cd build```<br>
+        ```cmake ..```<br>
+        ```make``` <br>
+
 kreiraće se izvršiv fajl sort koji iz terminala treba pokrenuti sa ./sort.
 ___
 
