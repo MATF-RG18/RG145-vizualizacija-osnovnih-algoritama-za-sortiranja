@@ -10,7 +10,6 @@
 
 int start_screen = 0;
 Sphere array_of_spheres[10];
-int initial[10] = {10,4,8,6,3,7,9,1,5,2};
 int sorting = 0;
 int array_lenght = 0;
 int global_i = 0, global_j = 0, swapping_ongonig = 0; 
@@ -19,7 +18,7 @@ int window_width = 1200;
 int window_height = 800;
 GLfloat lineWidthRange[2] = {0.0f, 5.0f};
 int type_of_sort = 0;
-std::string sorting_string[4] = {"Selection Sort","Insertion Sort", "Bubble Sort", "Quick Sort"};
+std::string sorting_string[3] = {"Selection Sort","Insertion Sort", "Bubble Sort"};
 
 void on_display(void){
     //postavljanje pozadine ekrana
@@ -60,6 +59,7 @@ void on_display1(void){
     drawGrid();
     draw_array();
     
+    glFlush(); 
     glutSwapBuffers();
 }
 
@@ -82,7 +82,8 @@ void on_display2(void){
     GLfloat shininess = 20;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    glClearColor(0, 0, 0, 1);
+    
     // Podesava se vidna tacka
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -108,7 +109,14 @@ void on_display2(void){
     // translacija za bolje prilagodjavanje
     glTranslatef(-4.5, 0, 0);
     drawArrayOfSpheres();
-    glTranslatef(4, 0, 0);
+    glTranslatef(4.5, 0, 0);
+    
+    glDisable(GL_LIGHTING);
+    glDisable(GL_LIGHT0);
+    
+    glTranslatef(-4.5, 0, 0);
+    sorting_spheres_text();
+    glTranslatef(4.5, 0, 0);
     
     glFlush(); 
     glutSwapBuffers();
@@ -148,8 +156,10 @@ void on_keyboard(unsigned char key, int x, int y){
             }
             case 'a': case 'A':{
                 // menjamo algoritam
-                type_of_sort = (type_of_sort + 1) % 4;
+                type_of_sort = (type_of_sort + 1) % 3;
                 break;
+            }case 'f':case 'F':{
+                speed = (speed + 1) % 5;
             }
         }
     }else if(sorting == 1 && start_screen != 0){
@@ -235,9 +245,7 @@ void init_array_of_spheres(){
     global_i = global_j = swapping_ongonig = 0;
     
     for(int i=0;i<MAX_ARR_SPHERES;i++){
-        // inicijalizujemo vrednosti niza
-        //TODO:array[i] = rand() % 10 + 1;
-        array[i] = initial[i];
+        array[i] = rand() % 10 + 1;
         array_of_spheres[i].radius = array[i] / 20.0;
         
         // inicijalizujemo vrednosti kooordinata
@@ -452,9 +460,10 @@ void bitmap_output(float x, float y, std::string string, void *font){
     glPopMatrix();
 }
 
-void sorting_bars_text(void){
-    
-    glColor3f(0.6f, 0.137255, 0.556863);	bitmap_output(-3, -50, "VIZUELIZACIJA ALGORITMA",   GLUT_BITMAP_TIMES_ROMAN_24 );
+void sorting_bars_text(void){    
+    glColor3f(0.6f, 0.137255, 0.556863);
+    bitmap_output(-3, -50, "VIZUELIZACIJA ALGORITMA",   GLUT_BITMAP_TIMES_ROMAN_24 );
+    glLineWidth(3);
     // linija pre teksta
     glBegin(GL_LINE_LOOP);
         glVertex2f(-4, -49);
@@ -467,7 +476,7 @@ void sorting_bars_text(void){
     glEnd();
 
     // ukoliko se niz ne sortira prikazi komande 
-    // ukoliko se ne sortira prikazi komandu pauziranja
+    // ukoliko se sortira prikazi komandu pauziranja
     if(sorting == 0){
         bitmap_output(-5, 17, "Komande:",GLUT_BITMAP_TIMES_ROMAN_24);
         
@@ -506,7 +515,58 @@ void sorting_bars_text(void){
 }
 
 void sorting_spheres_text(void){
+    glColor3f(0.6f, 0.137255, 0.556863);
+    bitmap_output(2.8, -2.0, "VIZUELIZACIJA ALGORITMA",   GLUT_BITMAP_TIMES_ROMAN_24 );
 
+    glLineWidth(2);
+    // linija pre teksta
+    glBegin(GL_LINE_LOOP);
+        glVertex2f(-0.8, -1.94);
+        glVertex2f(2.75, -1.94);
+    glEnd();
+    // linija posle teksta
+    glBegin(GL_LINE_LOOP);
+        glVertex2f(5.85, -1.94);
+        glVertex2f(9.5, -1.94);
+    glEnd();
+    
+    // ukoliko se niz ne sortira prikazi komande 
+    // ukoliko se ne sortira prikazi komandu pauziranja
+    if(sorting == 0){
+        glColor3f(0.6f, 0.137255, 0.556863);
+        bitmap_output(-0.5, 3, "Komande:",GLUT_BITMAP_TIMES_ROMAN_24);
+
+        // iscrtavanje tackice pre teksta i tekst
+        
+        draw_circle(0.03, -0.4, 2.85);
+        glColor3f(0.87, 0.6, 0.8);
+        bitmap_output(-0.32, 2.8, "Pritiskom na s algoritam se startuje",GLUT_BITMAP_TIMES_ROMAN_24);
+    
+        draw_circle(0.03, -0.4, 2.65);
+        glColor3f(0.87, 0.6, 0.8);
+        bitmap_output(-0.32, 2.6, "Pritiskom na a menja se algoritam",GLUT_BITMAP_TIMES_ROMAN_24);
+    
+        draw_circle(0.03,-0.4,2.45);
+        glColor3f(0.87, 0.6, 0.8);
+        bitmap_output(-0.32, 2.4, "Pritiskom na r niz se randomizuje",GLUT_BITMAP_TIMES_ROMAN_24);
+        
+        draw_circle(0.03,-0.4,2.25);
+        glColor3f(0.87, 0.6, 0.8);
+        bitmap_output(-0.32, 2.2, "Esc za izlaz iz programa",GLUT_BITMAP_TIMES_ROMAN_24);
+        
+        draw_circle(0.03, -0.4, 2.05);
+        glColor3f(0.87, 0.6, 0.8);
+        bitmap_output(-0.32, 2.0, "Izabrani sort: ",GLUT_BITMAP_TIMES_ROMAN_24);
+        
+        bitmap_output(-0.2, 1.8, sorting_string[type_of_sort],GLUT_BITMAP_9_BY_15);
+        
+    }else if(sorting == 1){
+        glColor3f(0.5,0.5,0.5);
+        
+        bitmap_output(0, 3, "Niz se sortira... Za promenu algoritma, randomizaciju niza ili izlazak iz programa prvo se mora pauzirati. ", GLUT_BITMAP_9_BY_15);
+        
+        bitmap_output(0.2, 2.8, "Pritisni p za pauzu.",GLUT_BITMAP_9_BY_15);
+    }
 }
 
 void display_start_screen_text(void){

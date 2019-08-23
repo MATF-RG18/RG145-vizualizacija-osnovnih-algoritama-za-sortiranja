@@ -8,6 +8,10 @@
 
 using namespace std;
 
+
+int speed = 0;
+int speed_for_bars[5] = {1000, 700, 500, 300, 100};
+int speed_for_spheres[5] = {70, 60, 50, 30, 10};
 float init_x1 = 0, init_x2 = 0;
 int flag = 0; 
 int p = -1, q = -1;
@@ -25,7 +29,7 @@ void barTimer(int value){
         }
     }
     glutPostRedisplay();
-    glutTimerFunc(1000, barTimer, 1);
+    glutTimerFunc(speed_for_bars[speed], barTimer, 1);
 }
 void sphereTimer(int value){
     if(value != 2)
@@ -40,7 +44,7 @@ void sphereTimer(int value){
     }
     
     glutPostRedisplay();
-    glutTimerFunc(30, sphereTimer, 2);
+    glutTimerFunc(speed_for_spheres[speed], sphereTimer, 2);
 }
 int notsorted(){
     for(int k=0;k<array_lenght-1;k++){
@@ -79,7 +83,7 @@ void selectionSort(){
 void insertionSort(){
     if(notsorted()){
         while(i<MAX_ARR_BARS){
-                j = i;
+            j = i;
             while(j<MAX_ARR_BARS-1){
                 if(array[j]>array[j+1]){
                     p = j;

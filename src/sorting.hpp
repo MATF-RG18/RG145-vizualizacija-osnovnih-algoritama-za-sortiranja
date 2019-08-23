@@ -6,6 +6,10 @@ extern int i, j;
 extern int minimum;
 extern int p, q;
 extern int flag;
+extern int speed;
+extern int speed_for_bars[5];
+extern int speed_for_spheres[5];
+
 
 void barTimer(int value);
 void sphereTimer(int value);
